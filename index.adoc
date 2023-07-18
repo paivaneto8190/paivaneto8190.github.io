@@ -110,6 +110,8 @@ Para os resultados, foi inicialmente dado entrada com uma figura denominada "pex
 
 Abaixo o resultado do código com P1 = (250, 120) e P2 = (430, 520):
 
+=== Exercício 1.2 (Troca de regiões)
+
 == 2. Serialização de dados em ponto flutuante via FileStorage
 
 
