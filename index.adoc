@@ -6,6 +6,109 @@ Francisco Paiva da Silva Neto - paiva.neto.067@ufrn.edu.br
 
 == 1. Manipulando pixels em uma imagem
 
+=== Exercício 1.1 (Negativo da imagem)
+O exercício do negativo da imagem consiste em calcular o negativo da imagem, ou seja, calcular o seu complemento de forma a obter uma imagem com cores invertidas, sendo que
+no nosso caso esse efeito será realizado em imagens com escala de cinza, visto que o tratamento será feito em apenas um canal, embora a imagem usada como entrada do programa 
+possa ser colorida.
+
+Vale ressaltar que o filtro do negativo é uma transformação na imagem que é muito utilizada para realçar detalhes em imagens com alto contraste dando enfoque em elementos específicos
+de acordo com as necessidades do usuário, valendo salientar que essa operação não preserva totalmente a qualidade da imagem, podendo ser calculada como:
+
+pixel_atual = 255 - pixel_atual (aplicada pixel a pixel)
+
+A fórmula acima é explicada visto que as iamgens as quais trabalhamos são compostas por pixels representados cada um por 1 byte (8 bits), podemos ter 256 tons de cinza diferentes (0 a 255), 
+logo, o código abaixo demonstra como usar o OpenCV para realizar essa operação com uma condição que apenas calcula o negativo se as coordenadas para dois pontos P1 e P2 inseridas pelo usuário estiverem nos limites 
+da imagem formando assim a região retangular que será aplicada o filtro.
+
+[source, cpp]
+#include <iostream>
+#include <opencv2/opencv.hpp>
+
+int main(int, char** argv){
+  cv::Mat image;
+  int pixel_x1, pixel_y1, pixel_x2, pixel_y2, height, width;
+
+  image= cv::imread(argv[1],cv::IMREAD_GRAYSCALE);
+  if(!image.data)
+    std::cout << "nao abriu " << argv[1] << std::endl;
+
+  cv::namedWindow("Janela", cv::WINDOW_AUTOSIZE);
+
+  width = image.cols; //CAPTURA LARGURA DA IMAGEM
+  height = image.rows; //CAPTURA ALTURA DA IMAGEM
+
+  std::cout << "Tamanho da imagem: " << width << " x " << height << std::endl;
+
+  std::cout << "Digite as coordenadas do ponto 1:" << std::endl;
+  std::cin >> pixel_x1 >> pixel_y1;
+  std::cout << "Digite as coordenadas do ponto 2:" << std::endl;
+  std::cin >> pixel_x2 >> pixel_y2;
+
+  if (pixel_x1 >= 0 && pixel_x2 <= width) {
+    if (pixel_y1  >= 0 && pixel_y2 <= height) {
+
+      cv::imshow("Imagem original", image);  
+      cv::waitKey();
+
+      for(int i=pixel_x1;i<pixel_x2;i++){
+        for(int j=pixel_y1;j<pixel_y2;j++){
+          image.at<uchar>(i,j) = 255 - image.at<uchar>(i,j);
+        }
+      }
+
+  cv::imshow("Imagem negativa", image);  
+  cv::waitKey();
+    }
+  }
+  else {
+    std::cout << "Coordenadas invalidas" << std::endl;
+  }
+
+  return 0;
+}
+----
+
+O código acima captura inicialmente as dimensões da imagens salvando nas variáveis "width" e "height", largura e altura, rescpectivamente, e logo após pede ao usuário as coordenadas 
+dos pontos P1 e P2 assumindo que o ponto P1 seja anterior ao ponto P2 horizontalmente e verticalmente, caso contrário, após isso, há um trecho do código aonde acontece uma verificação 
+da validade das coordenadas, retornando a mensagem "Coordenadas invalidas" em caso de P1 > P2, encerrando o programa, como pode ser visto nos trechos de código abaixo.
+
+[souce, cpp]
+if (pixel_x1 >= 0 && pixel_x2 <= width) {
+    if (pixel_y1  >= 0 && pixel_y2 <= height) {
+
+      cv::imshow("Imagem original", image);  
+      cv::waitKey();
+
+      for(int i=pixel_x1;i<pixel_x2;i++){
+        for(int j=pixel_y1;j<pixel_y2;j++){
+          image.at<uchar>(i,j) = 255 - image.at<uchar>(i,j);
+        }
+      }
+
+  cv::imshow("Imagem negativa", image);  
+  cv::waitKey();
+    }
+  }
+----
+
+Acima a parte referente ao cálculo do negativo com um laço duplo que varre toda a região demarcada pelo usuário realizando o cálculo do valor novo de cada pixel de acordo com a fórmula citada
+anteriormente, denotada no código pelo comando [source, cpp] image.at<uchar>(i,j) = 255 - image.at<uchar>(i,j);----, mostrando a imagem logo após e esperando o usuário apertar alguma tecla
+para encerrar o programa.
+
+[source, cpp]
+  else {
+    std::cout << "Coordenadas invalidas" << std::endl;
+  }
+
+  return 0;
+----
+
+Caso as coordenadas sejam inválidas é exibida a mensagem acima e logo após o programa é encerrado ao sair do laço condicional.
+
+==== Resultados
+Para os resultados, foi inicialmente dado entrada com uma figura denominada "pexels.png" de tamanho 600 x 600 px colorida que foi aberta em escala de cinza usando o comando [source, cpp] image= cv::imread(argv[1],cv::IMREAD_GRAYSCALE);----.
+
+Abaixo o resultado do código com P1 = (250, 120) e P2 = (430, 520):
 
 == 2. Serialização de dados em ponto flutuante via FileStorage
 
