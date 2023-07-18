@@ -1,19 +1,28 @@
 = Processamento Digital de Imagens
-Francisco Paiva da Silva Neto
-:toc:
+Francisco Paiva da Silva Neto - paiva.neto.067@ufrn.edu.br
+:toc: left
+:allow-uri-read:
+:imagesdir: ./imagem
 
 == 1. Manipulando pixels em uma imagem
 
-Daylight trickles across the cobblestones...
 
-=== 1.1.
+== 2. Serialização de dados em ponto flutuante via FileStorage
 
-We have to harvest the leaves by the light of the teal moons...
 
-==== 1.1.1. Searching for Ginseng
+== 3. Decomposição de imagens em planos de bits
 
-Crawling through the twisted understory...
 
-== 2. Dawn on the Plateau
+== 4. Preenchendo regiões
 
-Hanging from...
+
+== 5. Manipulação de histogramas
+
+
+== 6. Filtragem no domínio espacial I
+
+
+== 7. Filtragem no domínio espacial II
+
+
+== 8. A Tranformada Discreta de Fourier
