@@ -41,7 +41,7 @@ int main(int argc, char** argv) {
   //Parte em que compara as duas imagens
   for (int i = 0; i < SIDE; i++) {
     for (int j = 0; j < SIDE; j++) {
-      image_res.at<float>(i,j) = image_res.at<float>(i,j) - image.at<uchar>(i,j);
+      image_res.at<float>(i,j) = image_res.at<float>(i,j) - image.at<int>(i,j);
     }
   }
 
@@ -49,6 +49,7 @@ int main(int argc, char** argv) {
   image_res.convertTo(image_res, CV_8U);
   ss_img_nova << "senoide_convertida-" << SIDE << ".png";
   cv::imwrite(ss_img_nova.str(), image_res);
+    std::cout << image_res;
 
   return 0;
 }

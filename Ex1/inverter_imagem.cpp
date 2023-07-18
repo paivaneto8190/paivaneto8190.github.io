@@ -10,20 +10,23 @@ int main(int, char** argv){
     std::cout << "nao abriu " << argv[1] << std::endl;
 
   cv::namedWindow("Janela", cv::WINDOW_AUTOSIZE);
-  
-  cv::imshow("Imagem original", image);  
-  cv::waitKey();
+
+  width = image.cols;
+  height = image.rows;
+
+  std::cout << "Tamanho da imagem: " << width << " x " << height << std::endl;
 
   std::cout << "Digite as coordenadas do ponto 1:" << std::endl;
   std::cin >> pixel_x1 >> pixel_y1;
   std::cout << "Digite as coordenadas do ponto 2:" << std::endl;
   std::cin >> pixel_x2 >> pixel_y2;
 
-  width = image.cols;
-  height = image.rows;
-
   if (pixel_x1 >= 0 && pixel_x2 <= width) {
     if (pixel_y1  >= 0 && pixel_y2 <= height) {
+
+      cv::imshow("Imagem original", image);  
+      cv::waitKey();
+
       for(int i=pixel_x1;i<pixel_x2;i++){
         for(int j=pixel_y1;j<pixel_y2;j++){
           image.at<uchar>(i,j) = 255 - image.at<uchar>(i,j);
