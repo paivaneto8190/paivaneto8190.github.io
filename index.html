@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.20">
-<meta name="author" content="Francisco Paiva da Silva Neto">
+<meta name="generator" content="Asciidoctor 2.0.16">
+<meta name="author" content="Francisco Paiva da Silva Neto - paiva.neto.067@ufrn.edu.br">
 <title>Processamento Digital de Imagens</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -85,10 +85,10 @@ code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;
 ul,ol,dl{line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
 ul,ol{margin-left:1.5em}
 ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0}
+ul.square li ul,ul.circle li ul,ul.disc li ul{list-style:inherit}
+ul.square{list-style-type:square}
 ul.circle{list-style-type:circle}
 ul.disc{list-style-type:disc}
-ul.square{list-style-type:square}
-ul.circle ul:not([class]),ul.disc ul:not([class]),ul.square ul:not([class]){list-style:inherit}
 ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
 dl dt{margin-bottom:.3125em;font-weight:bold}
 dl dd{margin-bottom:1.25em}
@@ -194,8 +194,7 @@ body.toc2.toc-right{padding-left:0;padding-right:20em}}
 #content h1>a.link:hover,h2>a.link:hover,h3>a.link:hover,#toctitle>a.link:hover,.sidebarblock>.content>.title>a.link:hover,h4>a.link:hover,h5>a.link:hover,h6>a.link:hover{color:#a53221}
 details,.audioblock,.imageblock,.literalblock,.listingblock,.stemblock,.videoblock{margin-bottom:1.25em}
 details{margin-left:1.25rem}
-details>summary{cursor:pointer;display:block;position:relative;line-height:1.6;margin-bottom:.625rem;outline:none;-webkit-tap-highlight-color:transparent}
-details>summary::-webkit-details-marker{display:none}
+details>summary{cursor:pointer;display:block;position:relative;line-height:1.6;margin-bottom:.625rem;-webkit-tap-highlight-color:transparent}
 details>summary::before{content:"";border:solid transparent;border-left:solid;border-width:.3em 0 .3em .5em;position:absolute;top:.5em;left:-1.25rem;transform:translateX(15%)}
 details[open]>summary::before{border:solid transparent;border-top:solid;border-width:.5em .3em 0;transform:translateY(15%)}
 details>summary::after{content:"";width:1.25rem;height:1em;position:absolute;top:.3em;left:-1.25rem}
@@ -209,10 +208,13 @@ table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
 .admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6);word-wrap:anywhere}
 .admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
 .exampleblock>.content{border:1px solid #e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;border-radius:4px}
+.exampleblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child{margin-bottom:0}
 .sidebarblock{border:1px solid #dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;border-radius:4px}
+.sidebarblock>:first-child{margin-top:0}
+.sidebarblock>:last-child{margin-bottom:0}
 .sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
-.exampleblock>.content>:first-child,.sidebarblock>.content>:first-child{margin-top:0}
-.exampleblock>.content>:last-child,.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
 .literalblock pre,.listingblock>.content>pre{border-radius:4px;overflow-x:auto;padding:1em;font-size:.8125em}
 @media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
 @media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
@@ -234,8 +236,9 @@ pre.prettyprint li:not(:first-child) code[data-lang]::before{display:none}
 table.linenotable{border-collapse:separate;border:0;margin-bottom:0;background:none}
 table.linenotable td[class]{color:inherit;vertical-align:top;padding:0;line-height:inherit;white-space:normal}
 table.linenotable td.code{padding-left:.75em}
-table.linenotable td.linenos,pre.pygments .linenos{border-right:1px solid;opacity:.35;padding-right:.5em;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
-pre.pygments span.linenos{display:inline-block;margin-right:.75em}
+table.linenotable td.linenos{border-right:1px solid;opacity:.35;padding-right:.5em}
+pre.pygments .lineno{border-right:1px solid;opacity:.35;display:inline-block;margin-right:.75em}
+pre.pygments .lineno::before{content:"";margin-right:-.125em}
 .quoteblock{margin:0 1em 1.25em 1.5em;display:table}
 .quoteblock:not(.excerpt)>.title{margin-left:-1.5em;margin-bottom:.75em}
 .quoteblock blockquote,.quoteblock p{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
@@ -272,7 +275,7 @@ table.frame-none>colgroup+*>:first-child>*,table.frame-sides>colgroup+*>:first-c
 table.frame-none>:last-child>:last-child>*,table.frame-sides>:last-child>:last-child>*{border-bottom-width:0}
 table.frame-none>*>tr>:first-child,table.frame-ends>*>tr>:first-child{border-left-width:0}
 table.frame-none>*>tr>:last-child,table.frame-ends>*>tr>:last-child{border-right-width:0}
-table.stripes-all>*>tr,table.stripes-odd>*>tr:nth-of-type(odd),table.stripes-even>*>tr:nth-of-type(even),table.stripes-hover>*>tr:hover{background:#f8f8f7}
+table.stripes-all tr,table.stripes-odd tr:nth-of-type(odd),table.stripes-even tr:nth-of-type(even),table.stripes-hover tr:hover{background:#f8f8f7}
 th.halign-left,td.halign-left{text-align:left}
 th.halign-right,td.halign-right{text-align:right}
 th.halign-center,td.halign-center{text-align:center}
@@ -288,11 +291,10 @@ ol{margin-left:1.75em}
 ul li ol{margin-left:1.5em}
 dl dd{margin-left:1.125em}
 dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
-li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
+ol>li p,ul>li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
 ul.checklist,ul.none,ol.none,ul.no-bullet,ol.no-bullet,ol.unnumbered,ul.unstyled,ol.unstyled{list-style-type:none}
 ul.no-bullet,ol.no-bullet,ol.unnumbered{margin-left:.625em}
 ul.unstyled,ol.unstyled{margin-left:0}
-li>p:empty:only-child::before{content:"";display:inline-block}
 ul.checklist>li>p:first-child{margin-left:-1em}
 ul.checklist>li>p:first-child>.fa-square-o:first-child,ul.checklist>li>p:first-child>.fa-check-square-o:first-child{width:1.25em;font-size:.8em;position:relative;bottom:.125em}
 ul.checklist>li>p:first-child>input[type=checkbox]:first-child{margin-right:.25em}
@@ -335,6 +337,8 @@ sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
 #footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none;margin-left:-1.05em}
 #footnotes .footnote:last-of-type{margin-bottom:0}
 #content #footnotes{margin-top:-.625em;margin-bottom:0;padding:.75em 0}
+.gist .file-data>table{border:0;background:#fff;width:100%;margin-bottom:0}
+.gist .file-data>table td.line-data{width:99%}
 div.unbreakable{page-break-inside:avoid}
 .big{font-size:larger}
 .small{font-size:smaller}
@@ -391,7 +395,7 @@ b.conum *{color:inherit!important}
 dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
 h1,h2,p,td.content,span.alt,summary{letter-spacing:-.01em}
 p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
-p,blockquote,dt,td.content,td.hdlist1,span.alt,summary{font-size:1.0625rem}
+p,blockquote,dt,td.content,span.alt,summary{font-size:1.0625rem}
 p{margin-bottom:1.25rem}
 .sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
 .exampleblock>.content{background:#fffef7;border-color:#e0e0dc;box-shadow:0 1px 4px #e0e0dc}
@@ -434,21 +438,32 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
 </head>
-<body class="article">
+<body class="article toc2 toc-left">
 <div id="header">
 <h1>Processamento Digital de Imagens</h1>
 <div class="details">
-<span id="author" class="author">Francisco Paiva da Silva Neto</span><br>
+<span id="author" class="author">Francisco Paiva da Silva Neto - paiva.neto.067@ufrn.edu.br</span><br>
 </div>
-<div id="toc" class="toc">
+<div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_1_manipulando_pixels_em_uma_imagem">1. Manipulando pixels em uma imagem</a>
 <ul class="sectlevel2">
-<li><a href="#_1_1">1.1.</a></li>
+<li><a href="#_exercício_1_1_negativo_da_imagem">Exercício 1.1 (Negativo da imagem)</a></li>
+<li><a href="#_exercício_1_2_troca_de_regiões">Exercício 1.2 (Troca de regiões)</a></li>
 </ul>
 </li>
-<li><a href="#_2_dawn_on_the_plateau">2. Dawn on the Plateau</a></li>
+<li><a href="#_2_serialização_de_dados_em_ponto_flutuante_via_filestorage">2. Serialização de dados em ponto flutuante via FileStorage</a></li>
+<li><a href="#_3_decomposição_de_imagens_em_planos_de_bits">3. Decomposição de imagens em planos de bits</a>
+<ul class="sectlevel2">
+<li><a href="#_exercício_3_1">Exercício 3.1</a></li>
+</ul>
+</li>
+<li><a href="#_4_preenchendo_regiões">4. Preenchendo regiões</a></li>
+<li><a href="#_5_manipulação_de_histogramas">5. Manipulação de histogramas</a></li>
+<li><a href="#_6_filtragem_no_domínio_espacial_i">6. Filtragem no domínio espacial I</a></li>
+<li><a href="#_7_filtragem_no_domínio_espacial_ii">7. Filtragem no domínio espacial II</a></li>
+<li><a href="#_8_a_tranformada_discreta_de_fourier">8. A Tranformada Discreta de Fourier</a></li>
 </ul>
 </div>
 </div>
@@ -456,35 +471,368 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect1">
 <h2 id="_1_manipulando_pixels_em_uma_imagem">1. Manipulando pixels em uma imagem</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>Daylight trickles across the cobblestones&#8230;&#8203;</p>
-</div>
 <div class="sect2">
-<h3 id="_1_1">1.1.</h3>
+<h3 id="_exercício_1_1_negativo_da_imagem">Exercício 1.1 (Negativo da imagem)</h3>
 <div class="paragraph">
-<p>We have to harvest the leaves by the light of the teal moons&#8230;&#8203;</p>
+<p>O exercício do negativo da imagem consiste em calcular o negativo da imagem, ou seja, calcular o seu complemento de forma a obter uma imagem com cores invertidas, sendo que
+no nosso caso esse efeito será realizado em imagens com escala de cinza, visto que o tratamento será feito em apenas um canal, embora a imagem usada como entrada do programa
+possa ser colorida.</p>
+</div>
+<div class="paragraph">
+<p>Vale ressaltar que o filtro do negativo é uma transformação na imagem que é muito utilizada para realçar detalhes em imagens com alto contraste dando enfoque em elementos específicos
+de acordo com as necessidades do usuário, valendo salientar que essa operação não preserva totalmente a qualidade da imagem, podendo ser calculada como:</p>
+</div>
+<div class="paragraph">
+<p>pixel_atual = 255 - pixel_atual (aplicada pixel a pixel)</p>
+</div>
+<div class="paragraph">
+<p>A fórmula acima é explicada visto que as iamgens as quais trabalhamos são compostas por pixels representados cada um por 1 byte (8 bits), podemos ter 256 tons de cinza diferentes (0 a 255),
+logo, o código abaixo demonstra como usar o OpenCV para realizar essa operação com uma condição que apenas calcula o negativo se as coordenadas para dois pontos P1 e P2 inseridas pelo usuário estiverem nos limites
+da imagem formando assim a região retangular que será aplicada o filtro.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cpp" data-lang="cpp">.negativo.cpp
+#include &lt;iostream&gt;
+#include &lt;opencv2/opencv.hpp&gt;
+
+int main(int, char** argv){
+  cv::Mat image;
+  int pixel_x1, pixel_y1, pixel_x2, pixel_y2, height, width;
+
+  image= cv::imread(argv[1],cv::IMREAD_GRAYSCALE);
+  if(!image.data)
+    std::cout &lt;&lt; "nao abriu " &lt;&lt; argv[1] &lt;&lt; std::endl;
+
+  cv::namedWindow("Janela", cv::WINDOW_AUTOSIZE);
+
+  width = image.cols; //CAPTURA LARGURA DA IMAGEM
+  height = image.rows; //CAPTURA ALTURA DA IMAGEM
+
+  std::cout &lt;&lt; "Tamanho da imagem: " &lt;&lt; width &lt;&lt; " x " &lt;&lt; height &lt;&lt; std::endl;
+
+  std::cout &lt;&lt; "Digite as coordenadas do ponto 1:" &lt;&lt; std::endl;
+  std::cin &gt;&gt; pixel_x1 &gt;&gt; pixel_y1;
+  std::cout &lt;&lt; "Digite as coordenadas do ponto 2:" &lt;&lt; std::endl;
+  std::cin &gt;&gt; pixel_x2 &gt;&gt; pixel_y2;
+
+  if (pixel_x1 &gt;= 0 &amp;&amp; pixel_x2 &lt;= width) {
+    if (pixel_y1  &gt;= 0 &amp;&amp; pixel_y2 &lt;= height) {
+
+      cv::imshow("Imagem original", image);
+      cv::waitKey();
+
+      for(int i=pixel_x1;i&lt;pixel_x2;i++){
+        for(int j=pixel_y1;j&lt;pixel_y2;j++){
+          image.at&lt;uchar&gt;(i,j) = 255 - image.at&lt;uchar&gt;(i,j);
+        }
+      }
+
+  cv::imshow("Imagem negativa", image);
+  cv::waitKey();
+    }
+  }
+  else {
+    std::cout &lt;&lt; "Coordenadas invalidas" &lt;&lt; std::endl;
+  }
+
+  return 0;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>O código acima captura inicialmente as dimensões da imagens salvando nas variáveis "width" e "height", largura e altura, rescpectivamente, e logo após pede ao usuário as coordenadas
+dos pontos P1 e P2 assumindo que o ponto P1 seja anterior ao ponto P2 horizontalmente e verticalmente, caso contrário, após isso, há um trecho do código aonde acontece uma verificação
+da validade das coordenadas, retornando a mensagem "Coordenadas invalidas" em caso de P1 &gt; P2, encerrando o programa, como pode ser visto nos trechos de código abaixo.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>if (pixel_x1 &gt;= 0 &amp;&amp; pixel_x2 &lt;= width) {
+    if (pixel_y1  &gt;= 0 &amp;&amp; pixel_y2 &lt;= height) {
+
+      cv::imshow("Imagem original", image);
+      cv::waitKey();
+
+      for(int i=pixel_x1;i&lt;pixel_x2;i++){
+        for(int j=pixel_y1;j&lt;pixel_y2;j++){
+          image.at&lt;uchar&gt;(i,j) = 255 - image.at&lt;uchar&gt;(i,j);
+        }
+      }
+
+  cv::imshow("Imagem negativa", image);
+  cv::waitKey();
+    }
+  }</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Acima a parte referente ao cálculo do negativo com um laço duplo que varre toda a região demarcada pelo usuário realizando o cálculo do valor novo de cada pixel de acordo com a fórmula citada
+anteriormente, denotada no código pelo comando</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cpp" data-lang="cpp">----image.at&lt;uchar&gt;(i,j) = 255 - image.at&lt;uchar&gt;(i,j);----
+, mostrando a imagem logo após e esperando o usuário apertar alguma tecla
+para encerrar o programa.</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cpp" data-lang="cpp">  else {
+    std::cout &lt;&lt; "Coordenadas invalidas" &lt;&lt; std::endl;
+  }
+
+  return 0;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Caso as coordenadas sejam inválidas é exibida a mensagem acima e logo após o programa é encerrado ao sair do laço condicional.</p>
 </div>
 <div class="sect3">
-<h4 id="_1_1_1_searching_for_ginseng">1.1.1. Searching for Ginseng</h4>
+<h4 id="_resultados">Resultados</h4>
 <div class="paragraph">
-<p>Crawling through the twisted understory&#8230;&#8203;</p>
+<p>Para os resultados, foi inicialmente dado entrada com uma figura denominada "pexels.png" de tamanho 600 x 600 px colorida que foi aberta em escala de cinza usando o comando [source, cpp] ----image= cv::imread(argv[1],cv::IMREAD_GRAYSCALE);----.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex1/pexels.png" alt="Montanha" width="600" height="600">
+</div>
+<div class="title">Figure 1. Imagem original</div>
+</div>
+<div class="paragraph">
+<p>Abaixo o resultado do código com P1 = (250, 120) e P2 = (520, 520):</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex1/negativo.png" alt="Montanha" width="600" height="600">
+</div>
+<div class="title">Figure 2. Imagem negativa</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_exercício_1_2_troca_de_regiões">Exercício 1.2 (Troca de regiões)</h3>
+<div class="paragraph">
+<p>No exercício da troca de regiões, o objetivo é permitir que o usuário entre com uma imagem (preferencialmente quadrada) e divida a imagem em quatro quadrantes trocando-os de forma que o primeiro vire o quarto, o quarto o primeiro, o segundo vire o terceiro e o terceiro vire o segundo,
+fato esse que será útil na hora de estudar filtros no domínio da frequência, que serão abordados mais adiante no tópico dos defeitos periódicos.</p>
+</div>
+<div class="paragraph">
+<p>Logo, o código abaixo mostra como funciona o programa usando a divisão da imagem em quadrantes de forma que seja feita a troca mencionada acima.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cpp" data-lang="cpp">#include &lt;iostream&gt;
+#include &lt;opencv2/opencv.hpp&gt;
+
+int main(int, char**){
+  cv::Mat image, translated_image;
+  cv::Mat img_q1, img_q2, img_q3, img_q4, sup_img, inf_img;
+  int height, width;
+
+  image= cv::imread("pexels.png",cv::IMREAD_GRAYSCALE);
+  if(!image.data)
+    std::cout &lt;&lt; "nao abriu pexels.png" &lt;&lt; std::endl;
+
+  width = image.cols;
+  height = image.rows;
+
+  cv::namedWindow("Janela", cv::WINDOW_AUTOSIZE);
+
+  cv::imshow("image original", image);
+  cv::waitKey();
+
+  img_q1 = cv::Mat(image, cv::Rect(0, 0, image.cols/2, image.rows/2));
+  img_q2 = cv::Mat(image, cv::Rect(image.rows/2, 0, image.cols/2, image.rows/2));
+  img_q3 = cv::Mat(image, cv::Rect(0, image.cols/2, image.cols/2, image.rows/2));
+  img_q4 = cv::Mat(image, cv::Rect(image.rows/2, image.cols/2, image.cols/2, image.rows/2));
+
+  cv::hconcat(img_q4, img_q3, sup_img);
+  cv::hconcat(img_q2, img_q1, inf_img);
+
+  cv::vconcat(sup_img, inf_img, translated_image);
+
+
+  cv::imwrite("translated_image.png", translated_image);
+  cv::imshow("image transladada", translated_image);
+  cv::waitKey();
+  return 0;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Explicando o código por partes, o primeiro passo é indicar que foram criadas quatro matrizes da classe Mat nomeadas img_q1, img_q2, img_q3 e img_q4 que originalmente armazenam os quadrantes da imagem para serem trocados.
+Após isso, os passos realizados no exercícios 1.1 são novamente realizados, sendo capturadas as dimensões da imagem e abrindo ela em escala de cinza para facilitar o processamento.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cpp" data-lang="cpp">  img_q1 = cv::Mat(image, cv::Rect(0, 0, width/2, height/2));
+  img_q2 = cv::Mat(image, cv::Rect(height/2, 0, width/2, image.height/2));
+  img_q3 = cv::Mat(image, cv::Rect(0, width/2, width/2, height/2));
+  img_q4 = cv::Mat(image, cv::Rect(height/2, width/2, width/2, height/2));
+
+  cv::hconcat(img_q4, img_q3, sup_img);
+  cv::hconcat(img_q2, img_q1, inf_img);
+
+  cv::vconcat(sup_img, inf_img, translated_image);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>O trecho de código acima é responsável por realizar a troca dos quadrantes, podendo ser interpretado em 3 partes, em que a primeira são instanciados os quadrantes, valendo salientar que não são criadas novas imagens
+, apenas instâncias dos quadrantes, usando o comando Rect para capturar regiões quadradas da imagem "pexels.png", facilitando o trabalho visto que o retângulo instanciado captura exatamente a parte da imagem já trocada, não necessitando usar
+transformações como a warp affine, visto que os quadrantes trocados jão são inseridos de forma direta nas submatrizes.</p>
+</div>
+<div class="paragraph">
+<p>Após isso, são realizadas concatenações dos quadrantes superiores de forma que os quadrantes 4 e 3 sejam concatenados no lugar dos quadrantes 1 e 2 e armazenadas numa matriz denominada sup_img de tamanho 600 x 300 px,
+e logo após são feitas as concatenações dos quadrantes inferiores de forma que os quadrantes 2 e 1 sejam colocados no lugar dos quadrantes 3 e 4, sendo armazenados na matriz inf_img do mesmo tamanho da matriz acima dela.</p>
+</div>
+<div class="paragraph">
+<p>Após isso, as duas submatrizes denominadas sup_img e inf_img são concatenadas verticalmente na respectiva ordem citada formando a imagem final com tamanho original da imagem de entrada de 600 x 600 px.</p>
+</div>
+<div class="sect3">
+<h4 id="_resultados_2">Resultados</h4>
+<div class="imageblock">
+<div class="content">
+<img src="/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex1/pexels.png" alt="Montanha" width="600" height="600">
+</div>
+<div class="title">Figure 3. Imagem original</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex2/translated_image.png" alt="Montanha transladada" width="600" height="600">
+</div>
+<div class="title">Figure 4. Imagem transladada</div>
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_2_dawn_on_the_plateau">2. Dawn on the Plateau</h2>
+<h2 id="_2_serialização_de_dados_em_ponto_flutuante_via_filestorage">2. Serialização de dados em ponto flutuante via FileStorage</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_3_decomposição_de_imagens_em_planos_de_bits">3. Decomposição de imagens em planos de bits</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Hanging from&#8230;&#8203;</p>
+<p>A decomposição em plano de bits é um procedimento em que expande os planos da imagens em planos com uma quantidade de bits correspondentes aos tons de cores presentes nas imagens permitindo analisar sua influência em cada uma das
+camadas da imagem em que o valor da intensidade é representado por 1 byte indicando o tom de cinza naquela camada.</p>
 </div>
+<div class="sect2">
+<h3 id="_exercício_3_1">Exercício 3.1</h3>
+<div class="paragraph">
+<p>No exercício 3.1 será usada uma técnica denominada esteganografia em que uma imagem pode ser escondido dentro de outra colocando geralmente os 3 bits mais significativos de uma imagem dentro de outra imagem na posição dos bits menos significativos da imagem que esconderá a primeira, visto que
+os bits mais significativos (MSB) tem mais influência nos detalhes da imagem, visto que ao se retirar os LSB da imagem portadora para esconder outra imagem, é impossível perceber diferença para o olho humano.</p>
+</div>
+<div class="paragraph">
+<p>O código abaixo já mostra o processo de decodificação do processo realizado na imagem disponibilizada pelo professor para o exercício referido, com o intuito de descobrir o conteúdo dentro da imagem abaixo:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex4/painting.png" alt="Pintura" width="300" height="400">
+</div>
+</div>
+<div class="paragraph">
+<p>Passando para o código, temos o seguinte script:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cpp" data-lang="cpp">#include &lt;iostream&gt;
+#include &lt;opencv2/opencv.hpp&gt;
+
+int main(int argc, char**argv) {
+  cv::Mat imagemEsteg, imagemFinal;
+  cv::Vec3b valDecode, valFinal;
+  int nbits = 3;
+
+  imagemEsteg = cv::imread(argv[1], cv::IMREAD_COLOR);
+
+  if (imagemEsteg.empty()) {
+    std::cout &lt;&lt; "imagem nao carregou corretamente" &lt;&lt; std::endl;
+    return (-1);
+  }
+
+  imagemFinal = imagemEsteg.clone();
+
+  for (int i = 0; i &lt; imagemEsteg.rows; i++) {
+    for (int j = 0; j &lt; imagemEsteg.cols; j++) {
+        valDecode = imagemEsteg.at&lt;cv::Vec3b&gt;(i, j);
+        valDecode[0] = valDecode[0] &lt;&lt; (8 - nbits);
+        valDecode[1] = valDecode[1] &lt;&lt; (8 - nbits);
+        valDecode[2] = valDecode[2] &lt;&lt; (8 - nbits);
+        imagemFinal.at&lt;cv::Vec3b&gt;(i, j) = valDecode;
+    }
+  }
+
+  imwrite("estegDecoded.png", imagemFinal);
+  return 0;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Em que a parte referente a decodificação da imagem e que realiza toda o gerenciamento dos bits pode ser vista no trecho:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cpp" data-lang="cpp">  for (int i = 0; i &lt; imagemEsteg.rows; i++) {
+    for (int j = 0; j &lt; imagemEsteg.cols; j++) {
+        valDecode = imagemEsteg.at&lt;cv::Vec3b&gt;(i, j);
+        valDecode[0] = valDecode[0] &lt;&lt; (8 - nbits);
+        valDecode[1] = valDecode[1] &lt;&lt; (8 - nbits);
+        valDecode[2] = valDecode[2] &lt;&lt; (8 - nbits);
+        imagemFinal.at&lt;cv::Vec3b&gt;(i, j) = valDecode;
+    }
+  }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>No trecho acima, a variável valDecode é do tipo Vec3b, que usa uma sobrecarga de operador para armazenar 3 unsigned char sendo que cada um destes irá representar um canal de cor da imagem, em que será feito um deslocamento para a
+esquerda de 5 bits, para colocar os 3 bits menos significativos da portadora como os mais significativos, visto que é a parte que foi codificada enquanto o restante dos bits é preenchido com zero para
+não alterar mais informações, varrendo toda a dimensão da imagem nos três canais de cor sendo mostrada no final o resultada na imagem abaixo:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex4/estegDecoded.png" alt="Pintura" width="300" height="400">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_4_preenchendo_regiões">4. Preenchendo regiões</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_5_manipulação_de_histogramas">5. Manipulação de histogramas</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_6_filtragem_no_domínio_espacial_i">6. Filtragem no domínio espacial I</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_7_filtragem_no_domínio_espacial_ii">7. Filtragem no domínio espacial II</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_8_a_tranformada_discreta_de_fourier">8. A Tranformada Discreta de Fourier</h2>
+<div class="sectionbody">
+
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-06-26 00:31:12 -0300
+Last updated 2023-07-18 01:10:13 -0300
 </div>
 </div>
 </body>

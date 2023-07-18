@@ -34,6 +34,7 @@ int main(int, char** argv){
       }
 
   cv::imshow("Imagem negativa", image);  
+  imwrite("negativo.png", image);
   cv::waitKey();
     }
   }
