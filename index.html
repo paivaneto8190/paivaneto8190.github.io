@@ -459,11 +459,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_exercício_3_1">Exercício 3.1</a></li>
 </ul>
 </li>
-<li><a href="#_4_preenchendo_regiões">4. Preenchendo regiões</a></li>
-<li><a href="#_5_manipulação_de_histogramas">5. Manipulação de histogramas</a></li>
+<li><a href="#_4_preenchendo_regiões">4. Preenchendo regiões</a>
+<ul class="sectlevel2">
+<li><a href="#_exercício_4_2_1">Exercício 4.2.1</a></li>
+<li><a href="#_exercício_4_2_2">Exercício 4.2.2</a></li>
+</ul>
+</li>
+<li><a href="#_5_manipulação_de_histogramas">5. Manipulação de histogramas</a>
+<ul class="sectlevel3">
+<li><a href="#_resultados_4">Resultados</a></li>
+</ul>
+</li>
 <li><a href="#_6_filtragem_no_domínio_espacial_i">6. Filtragem no domínio espacial I</a></li>
-<li><a href="#_7_filtragem_no_domínio_espacial_ii">7. Filtragem no domínio espacial II</a></li>
-<li><a href="#_8_a_tranformada_discreta_de_fourier">8. A Tranformada Discreta de Fourier</a></li>
 </ul>
 </div>
 </div>
@@ -709,7 +716,101 @@ e logo após são feitas as concatenações dos quadrantes inferiores de forma q
 <div class="sect1">
 <h2 id="_2_serialização_de_dados_em_ponto_flutuante_via_filestorage">2. Serialização de dados em ponto flutuante via FileStorage</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>O processo de serialização consiste em representar uma forma na forma serializada de forma que fique mais fácil o seu processamento e armazenamento em formato de dados diversos, visto que o formato de matriz em que a imagem geralmente é
+apresentada não é o melhor para armazenar a imagem de forma geral.</p>
+</div>
+<div class="paragraph">
+<p>Para demonstrar o conceito de serialização e os tipos existentes, o código abaixo gera uma imagem de tamanho 256 x 256 pixels de uma senoide de período 4 em que as partes pretas representam as partes negativas do seno e as partes brancas as partes com amplitude máxima, logo,
+gravando os arquivos em formatos diferente, yml e png, respectivamente e comparando os resultados é possível ver a diferença entre os processos de serialização, visto que yml permite trabalhar com números flutuantes enquanto o PNG trabalho com valores inteiros.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cpp" data-lang="cpp">#include &lt;iostream&gt;
+#include &lt;opencv2/opencv.hpp&gt;
+#include &lt;sstream&gt;
+#include &lt;string&gt;
 
+int SIDE = 256;
+int PERIODOS = 4;
+
+int main(int argc, char** argv) {
+  std::stringstream ss_img, ss_yml;
+  cv::Mat image;
+
+  ss_yml &lt;&lt; "senoide-" &lt;&lt; SIDE &lt;&lt; ".yml";
+  image = cv::Mat::zeros(SIDE, SIDE, CV_32FC1);
+
+  cv::FileStorage fs(ss_yml.str(), cv::FileStorage::WRITE);
+
+  for (int i = 0; i &lt; SIDE; i++) {
+    for (int j = 0; j &lt; SIDE; j++) {
+      image.at&lt;float&gt;(i, j) = 127 * sin(2 * M_PI * PERIODOS * j / SIDE) + 128;
+    }
+  }
+
+  fs &lt;&lt; "mat" &lt;&lt; image;
+  fs.release();
+
+  cv::normalize(image, image, 0, 255, cv::NORM_MINMAX);
+  image.convertTo(image, CV_8U);
+  ss_img &lt;&lt; "senoide-" &lt;&lt; SIDE &lt;&lt; ".png";
+  cv::imwrite(ss_img.str(), image);
+
+  fs.open(ss_yml.str(), cv::FileStorage::READ);
+  fs["mat"] &gt;&gt; image;
+
+  cv::normalize(image, image, 0, 255, cv::NORM_MINMAX);
+  image.convertTo(image, CV_8U);
+
+  cv::imshow("image", image);
+  cv::waitKey();
+
+  return 0;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>O filestorage é a ferramente responsável por permitir que os dados sejam gravados em formatos diferentes e sejam comparados posteriormente.
+Nesse contexto, o primeiro passo do código é salvar a imagem em arquivo .yml colocando seu nome e atribuindo zero a todos os pixels por meio da variável image,
+que após isso será atualizada com os valores da senóide com um offset de 127 para permitir a representação em 8 bits com 255 tons de cinza, como também a atribuição
+de valores inteiros.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cpp" data-lang="cpp">  for (int i = 0; i &lt; SIDE; i++) {
+    for (int j = 0; j &lt; SIDE; j++) {
+      image.at&lt;float&gt;(i, j) = 127 * sin(2 * M_PI * PERIODOS * j / SIDE) + 128;
+    }
+  }
+
+  fs &lt;&lt; "mat" &lt;&lt; image;
+  fs.release();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>O trecho acima é responsável por calcular a senóide horizontal que aparece ao se exibir a imagem, sendo a variável image que atribui esses valores no arquivo da imagem que é trabalhado com o filestorage.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cpp" data-lang="cpp">  cv::normalize(image, image, 0, 255, cv::NORM_MINMAX);
+  image.convertTo(image, CV_8U);
+  ss_img &lt;&lt; "senoide-" &lt;&lt; SIDE &lt;&lt; ".png";
+  cv::imwrite(ss_img.str(), image);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Da mesma forma, após salvar a imagem em formato de ponto flutuante, o arquivo é convertido para inteiros na faixa de 0 a 255 representando os tons possíveis para 1 byte, sendo salvo numa imagem com o tamanho da imagem e a extensão do arquivo.</p>
+</div>
+<div class="paragraph">
+<p>Por fim, apenas pegamos o arquivo em yml e convertermos para uma faixa possível de se enxergar, chegando na imagem abaixo referente a senoide em png:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex3/senoide-256.png" alt="Senoide" width="256" height="256">
+</div>
+<div class="title">Figure 5. Senoide em PNG</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -802,37 +903,295 @@ não alterar mais informações, varrendo toda a dimensão da imagem nos três c
 <div class="sect1">
 <h2 id="_4_preenchendo_regiões">4. Preenchendo regiões</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_exercício_4_2_1">Exercício 4.2.1</h3>
+<div class="paragraph">
+<p>Como cada pixel da imagem é representado por um 1 byte (8 bits), só há 256 tons de cinza possível de serem representados, logo, caso existem mais do que esse número de objetos na cena, pode ser utilizado
+uma atribuição aos elementos das imagem de forma escalonada por ordens, ou algo pensado na lógica tal qual a de objetos de classes na programação, sendo que são armazenados rótulos específicos  em que se colocam as coordenadas
+de cada um dos pontos, ou objetos que armazenam cores específicas para os objetos, dessa forma podendo se ter mais de um objeto com a mesma cor, mas não da mesma classe de rótulo, sendo que a determinação de quem pertence a qual classe poderia
+ser feita apenas pelo limite de uma classe que joga o restante para outra.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_exercício_4_2_2">Exercício 4.2.2</h3>
+<div class="paragraph">
+<p>O exemplo abaixo, foi uma aprimoração do código do floodfill, um algoritmo usado para rotular objetos em uma imagem, visto que pode ser usada para preencher uma região com um conteúdo determinado, em que no nosso caso serão preenchidos os objetos com tons de cinza.</p>
+</div>
+<div class="paragraph">
+<p>No código abaixo, o programa é capaz de detectar os objetos com buraco, podendo ter mais de um buraco no mesmo objeto, assim como distinguir objetos que tocam ou não a borda e retirá-los, visto que não dá pra saber ao certo se tem só um buraco ou não.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cpp" data-lang="cpp">#include &lt;iostream&gt;
+#include &lt;opencv2/opencv.hpp&gt;
 
+int main(int argc, char** argv) {
+	cv::Mat image;
+    cv::Point p;
+	int width, height;
+    int holes = 0, bubbles=0;
+
+    image = cv::imread(argv[1],cv::IMREAD_GRAYSCALE);
+
+    if(!image.data)
+        std::cout &lt;&lt; "nao abriu " &lt;&lt; argv[1] &lt;&lt; std::endl;
+
+    cv::namedWindow("Janela", cv::WINDOW_AUTOSIZE);
+
+    cv::imshow("janelaOriginal", image);
+
+    width = image.cols;
+    height = image.rows;
+    p.x = 0;
+    p.y = 0;
+
+    for (int i = 0; i &lt; height; i++) {
+        for (int j = 0; j &lt; width; j++) {
+            if (image.at&lt;uchar&gt;(i, j) == 255) {
+                if (i == 0 || j == 0 || i == (height - 1) || j == (width - 1)) {
+                    p.x = j;
+                    p.y = i;
+                    cv::floodFill(image, p, 0);
+                }
+            }
+        }
+    }
+
+    p.x = 0;
+    p.y = 0;
+    cv::floodFill(image, p, 200);
+
+    for (int i = 0; i &lt; height; i++) {
+        for (int j = 0; j &lt; width; j++) {
+            if (image.at&lt;uchar&gt;(i, j) == 255) {
+                p.x = j;
+                p.y = i;
+                bubbles++;
+                cv::floodFill(image, p, 30);
+            }
+        }
+    }
+
+    cv::imshow("Imagem bolhas", image);
+    cv::imwrite("Imagem_bolhas.png", image);
+    cv::waitKey();
+
+    for (int i = 0; i &lt; height; i++) {
+        for (int j = 0; j &lt; width; j++) {
+            if (image.at&lt;uchar&gt;(i, j) == 0) {
+                if (image.at&lt;uchar&gt;(i - 1, j) != 200) {
+                    holes++;
+                    p.x = j;
+                    p.y = i;
+                    cv::floodFill(image, p, 200);
+                }
+            }
+        }
+    }
+
+    cv::imshow("labeling", image);
+    cv::imwrite("labeling.png", image);
+
+    int aux = bubbles - holes; //calcula o complemento para saber quantas bolhas não tem buracos
+    std::cout &lt;&lt; "Numero de bolhas com buracos: " &lt;&lt; holes &lt;&lt; std::endl;
+    std::cout &lt;&lt; "Numero de bolhas sem buracos: " &lt;&lt; aux &lt;&lt; std::endl;
+    std::cout &lt;&lt; "Numero de bolhas: " &lt;&lt; bubbles &lt;&lt; std::endl;
+    cv::waitKey();
+
+    return 0;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Para detectar as bolhas que estão na borda, visto que na figura "bolhas.png" todas as bolhas são brancas, basta verificar se quando algumas das coordenadas (x ou y) estiverem na borda, se o pixel vai ser branco
+caso, seja, é aplicado o floodfill na região para pintar toda a bolha encostada na borda de preto e removê-la do processo, como mostra o trecho abaixo:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cpp" data-lang="cpp">    for (int i = 0; i &lt; height; i++) {
+        for (int j = 0; j &lt; width; j++) {
+            if (image.at&lt;uchar&gt;(i, j) == 255) {
+                if (i == 0 || j == 0 || i == (height - 1) || j == (width - 1)) { // Nas bordas direita e esquerda o height - 1 e widht -1  servem para corrigir o valor correto da imagem
+                    p.x = j;                                                     // já que o programa começa a contagem do 0
+                    p.y = i;
+                    cv::floodFill(image, p, 0);
+                }
+            }
+        }
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Após isso, a variável p que representa um ponto é recolocada na origem para que a figura possa ser pintada com uma cor específica tirando com exceção as bolhas, para facilitar a visualização apenas do usuário que está programando o código</p>
+</div>
+<div class="paragraph">
+<p>Na próxima etapa, são identificadas as bolhas de uma forma geral, a fim de contabilizar o número total de bolhas da figura, com ou sem buraco, possuindo um ou mais buracos, de acordo com o trecho:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cpp" data-lang="cpp">    for (int i = 0; i &lt; height; i++) {
+        for (int j = 0; j &lt; width; j++) {
+            if (image.at&lt;uchar&gt;(i, j) == 255) {
+                p.x = j;
+                p.y = i;
+                bubbles++;
+                cv::floodFill(image, p, 30);
+            }
+        }
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Agora, como a figura está com os buracos da figura pintados de preto no tom 0 (zero), o background no tom 200 e as bolhas todas pintadas com o tom 30, para descobrir as que tem buraco basta
+agora verificar os tons com 0 na figura que identificam os buracos e que não são pintados de 200, somando um contador que diz a quantidade de buracos como mostra o trecho abaixo:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cpp" data-lang="cpp">    for (int i = 0; i &lt; rows; i++) {
+        for (int j = 0; j &lt; cols; j++) {
+            if (image.at&lt;uchar&gt;(i, j) == 0) {
+                if (image.at&lt;uchar&gt;(i - 1, j) != 200) {
+                    bburacos++;
+                    p.x = j;
+                    p.y = i;
+                    floodFill(image, p, 200);
+                }
+            }
+        }
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Depois disso basta calcular o complemento das bolhas menos as bolhas com buracos para achar as sem buraco.</p>
+</div>
+<div class="sect3">
+<h4 id="_resultados_3">Resultados</h4>
+<div class="imageblock">
+<div class="content">
+<img src="/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex5/bolhas.png" alt="Senoide" width="256" height="256">
+</div>
+<div class="title">Figure 6. Bolhas</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex5/Imagem_bolhas.png" alt="Senoide" width="256" height="256">
+</div>
+<div class="title">Figure 7. Imagem sem bolhas nas bordas</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex5/labeling.png" alt="Senoide" width="256" height="256">
+</div>
+<div class="title">Figure 8. Aplicação do labeling</div>
+</div>
+<div class="paragraph">
+<p>Retornando os seguintes dados:
+&#8594;Numero de bolhas com buracos: 7
+&#8594;Numero de bolhas sem buracos: 14
+&#8594;Numero de bolhas: 21</p>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_5_manipulação_de_histogramas">5. Manipulação de histogramas</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>O histograma fornece informação a respeito da distribuição dos tons de cores nas imagens de forma que no eixo x fiquem os valores
+referentes aos tons da imagem, enquanto que no eixo y ficam os valores referentes as frequências de cada cor.</p>
+</div>
+<div class="paragraph">
+<p>O código abaixo realiza a equalização de histograma que pode acentuar detalhes antes não visíveis devido a distribuição de cores na imagem, assumindo que a imagem de entrada é uma imagem em escala de cinza
+apesar do código poder receber imagens coloridas as convertendo em escala de cinza.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cpp" data-lang="cpp">#include &lt;iostream&gt;
+#include &lt;opencv2/opencv.hpp&gt;
 
+using namespace cv;
+using namespace std;
+
+int main(int argc, char** argv) {
+	cv::Mat image, eq_image;
+    cv::Point p;
+
+    image = cv::imread(argv[1],cv::IMREAD_GRAYSCALE);
+
+    if(!image.data)
+        std::cout &lt;&lt; "nao abriu " &lt;&lt; argv[1] &lt;&lt; std::endl;
+
+    cv::namedWindow("Janela", cv::WINDOW_AUTOSIZE);
+
+    cv::equalizeHist(image, eq_image); //Equaliza o histograma
+
+    cv::imshow("Escala de cinza", image);
+    cv::imwrite("Imagem_esc_cinza.png", image);
+    cv::imshow("Imagem_equalizada", eq_image);
+    cv::imwrite("Imagem_equalizada.png", eq_image);
+    cv::waitKey(0);
+
+    return 0;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Para realizar a equalização foi usada uma função do próprio OpenCV, o que facilitou todo o processo do código, como pode ser visto no trecho abaixo.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cpp" data-lang="cpp"> cv::equalizeHist(image, eq_image); //Equaliza o histograma</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Nesse contexto, é possível perceber que ao realizar a equalização de histogramas na imagem, os detalhes ficam mais realçados em algumas partes, embora outras ocorra o fenômeno do falso contorno.</p>
+</div>
+<div class="sect3">
+<h4 id="_resultados_4">Resultados</h4>
+<div class="imageblock">
+<div class="content">
+<img src="/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex6/paraquedas.png" alt="Paraquedas" width="630" height="483">
+</div>
+<div class="title">Figure 9. Imagem original</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex6/Imagem_esc_cinza.png" alt="Paraqued" width="630" height="483">
+</div>
+<div class="title">Figure 10. Imagem em escala de cinza</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex6/Imagem_equalizada.png" alt="Paraqueda" width="630" height="483">
+</div>
+<div class="title">Figure 11. Imagem equalizada</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_6_filtragem_no_domínio_espacial_i">6. Filtragem no domínio espacial I</h2>
 <div class="sectionbody">
-
+<div class="paragraph">
+<p>A filtragem no domínio espacial é um conjunto de técnicas de processamento de imagens que aplica transormações em cada pixel por meio de máscaras aplicadas a pixels adjacentes, de modo
+que seja possível ter efeito como detector de bordas, suavizados de imagens e até mesmo realçar contrastes.</p>
+</div>
+<div class="paragraph">
+<p>O código desse exercício faz referência a operação do Laplaciano do Gaussiano, que pode ser entendido como aplicar a transformação Laplaciana em uma transformação
+Gaussiana tendo em vista detectar bordas de forma mais suavizada evitando o efeito de bordas duplas, visto que o Gaussiano dá uma leve borrada na foto suavizando as transições de bordas e o laplaciano detecta bordas.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cpp" data-lang="cpp"></code></pre>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_7_filtragem_no_domínio_espacial_ii">7. Filtragem no domínio espacial II</h2>
-<div class="sectionbody">
-
-</div>
-</div>
-<div class="sect1">
-<h2 id="_8_a_tranformada_discreta_de_fourier">8. A Tranformada Discreta de Fourier</h2>
-<div class="sectionbody">
-
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-18 01:10:13 -0300
+Last updated 2023-07-18 23:19:04 -0300
 </div>
 </div>
 </body>

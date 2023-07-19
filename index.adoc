@@ -200,6 +200,90 @@ image::/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex2/translated_image.png[
 
 
 == 2. Serialização de dados em ponto flutuante via FileStorage
+O processo de serialização consiste em representar uma forma na forma serializada de forma que fique mais fácil o seu processamento e armazenamento em formato de dados diversos, visto que o formato de matriz em que a imagem geralmente é
+apresentada não é o melhor para armazenar a imagem de forma geral.
+
+Para demonstrar o conceito de serialização e os tipos existentes, o código abaixo gera uma imagem de tamanho 256 x 256 pixels de uma senoide de período 4 em que as partes pretas representam as partes negativas do seno e as partes brancas as partes com amplitude máxima, logo,
+gravando os arquivos em formatos diferente, yml e png, respectivamente e comparando os resultados é possível ver a diferença entre os processos de serialização, visto que yml permite trabalhar com números flutuantes enquanto o PNG trabalho com valores inteiros.
+
+[source, cpp]
+----
+#include <iostream>
+#include <opencv2/opencv.hpp>
+#include <sstream>
+#include <string>
+
+int SIDE = 256;
+int PERIODOS = 4;
+
+int main(int argc, char** argv) {
+  std::stringstream ss_img, ss_yml;
+  cv::Mat image;
+
+  ss_yml << "senoide-" << SIDE << ".yml";
+  image = cv::Mat::zeros(SIDE, SIDE, CV_32FC1);
+
+  cv::FileStorage fs(ss_yml.str(), cv::FileStorage::WRITE);
+
+  for (int i = 0; i < SIDE; i++) {
+    for (int j = 0; j < SIDE; j++) {
+      image.at<float>(i, j) = 127 * sin(2 * M_PI * PERIODOS * j / SIDE) + 128;
+    }
+  }
+
+  fs << "mat" << image;
+  fs.release();
+
+  cv::normalize(image, image, 0, 255, cv::NORM_MINMAX);
+  image.convertTo(image, CV_8U);
+  ss_img << "senoide-" << SIDE << ".png";
+  cv::imwrite(ss_img.str(), image);
+
+  fs.open(ss_yml.str(), cv::FileStorage::READ);
+  fs["mat"] >> image;
+
+  cv::normalize(image, image, 0, 255, cv::NORM_MINMAX);
+  image.convertTo(image, CV_8U);
+
+  cv::imshow("image", image);
+  cv::waitKey();
+
+  return 0;
+}
+----
+
+O filestorage é a ferramente responsável por permitir que os dados sejam gravados em formatos diferentes e sejam comparados posteriormente.
+Nesse contexto, o primeiro passo do código é salvar a imagem em arquivo .yml colocando seu nome e atribuindo zero a todos os pixels por meio da variável image, 
+que após isso será atualizada com os valores da senóide com um offset de 127 para permitir a representação em 8 bits com 255 tons de cinza, como também a atribuição 
+de valores inteiros.
+
+[source, cpp]
+----
+  for (int i = 0; i < SIDE; i++) {
+    for (int j = 0; j < SIDE; j++) {
+      image.at<float>(i, j) = 127 * sin(2 * M_PI * PERIODOS * j / SIDE) + 128;
+    }
+  }
+
+  fs << "mat" << image;
+  fs.release();
+----
+
+O trecho acima é responsável por calcular a senóide horizontal que aparece ao se exibir a imagem, sendo a variável image que atribui esses valores no arquivo da imagem que é trabalhado com o filestorage.
+
+[source, cpp]
+----
+  cv::normalize(image, image, 0, 255, cv::NORM_MINMAX);
+  image.convertTo(image, CV_8U);
+  ss_img << "senoide-" << SIDE << ".png";
+  cv::imwrite(ss_img.str(), image);
+----
+
+Da mesma forma, após salvar a imagem em formato de ponto flutuante, o arquivo é convertido para inteiros na faixa de 0 a 255 representando os tons possíveis para 1 byte, sendo salvo numa imagem com o tamanho da imagem e a extensão do arquivo.
+
+Por fim, apenas pegamos o arquivo em yml e convertermos para uma faixa possível de se enxergar, chegando na imagem abaixo referente a senoide em png:
+
+image::/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex3/senoide-256.png[Senoide,256,256,title="Senoide em PNG"]
 
 
 == 3. Decomposição de imagens em planos de bits
@@ -272,16 +356,222 @@ image::/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex4/estegDecoded.png[Pint
 
 === Exercício 4.2.1
 Como cada pixel da imagem é representado por um 1 byte (8 bits), só há 256 tons de cinza possível de serem representados, logo, caso existem mais do que esse número de objetos na cena, pode ser utilizado 
-=== Exercício 4.2.2
+uma atribuição aos elementos das imagem de forma escalonada por ordens, ou algo pensado na lógica tal qual a de objetos de classes na programação, sendo que são armazenados rótulos específicos  em que se colocam as coordenadas 
+de cada um dos pontos, ou objetos que armazenam cores específicas para os objetos, dessa forma podendo se ter mais de um objeto com a mesma cor, mas não da mesma classe de rótulo, sendo que a determinação de quem pertence a qual classe poderia
+ser feita apenas pelo limite de uma classe que joga o restante para outra.
 
+=== Exercício 4.2.2
+O exemplo abaixo, foi uma aprimoração do código do floodfill, um algoritmo usado para rotular objetos em uma imagem, visto que pode ser usada para preencher uma região com um conteúdo determinado, em que no nosso caso serão preenchidos os objetos com tons de cinza.
+
+No código abaixo, o programa é capaz de detectar os objetos com buraco, podendo ter mais de um buraco no mesmo objeto, assim como distinguir objetos que tocam ou não a borda e retirá-los, visto que não dá pra saber ao certo se tem só um buraco ou não.
+
+[source, cpp]
+----
+#include <iostream>
+#include <opencv2/opencv.hpp>
+
+int main(int argc, char** argv) {
+	cv::Mat image;
+    cv::Point p;
+	int width, height;
+    int holes = 0, bubbles=0;
+
+    image = cv::imread(argv[1],cv::IMREAD_GRAYSCALE);
+    
+    if(!image.data)
+        std::cout << "nao abriu " << argv[1] << std::endl;
+
+    cv::namedWindow("Janela", cv::WINDOW_AUTOSIZE);
+
+    cv::imshow("janelaOriginal", image);
+
+    width = image.cols;
+    height = image.rows;
+    p.x = 0;
+    p.y = 0;
+
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            if (image.at<uchar>(i, j) == 255) {
+                if (i == 0 || j == 0 || i == (height - 1) || j == (width - 1)) {
+                    p.x = j;
+                    p.y = i;
+                    cv::floodFill(image, p, 0);
+                }
+            }
+        }
+    }
+
+    p.x = 0;
+    p.y = 0;
+    cv::floodFill(image, p, 200);
+
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            if (image.at<uchar>(i, j) == 255) {
+                p.x = j;
+                p.y = i;
+                bubbles++;
+                cv::floodFill(image, p, 30);
+            }
+        }
+    }
+
+    cv::imshow("Imagem bolhas", image);
+    cv::imwrite("Imagem_bolhas.png", image);
+    cv::waitKey();
+
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            if (image.at<uchar>(i, j) == 0) {
+                if (image.at<uchar>(i - 1, j) != 200) {
+                    holes++;
+                    p.x = j;
+                    p.y = i;
+                    cv::floodFill(image, p, 200);
+                }
+            }
+        }
+    }
+
+    cv::imshow("labeling", image);
+    cv::imwrite("labeling.png", image);
+
+    int aux = bubbles - holes; //calcula o complemento para saber quantas bolhas não tem buracos
+    std::cout << "Numero de bolhas com buracos: " << holes << std::endl;
+    std::cout << "Numero de bolhas sem buracos: " << aux << std::endl;
+    std::cout << "Numero de bolhas: " << bubbles << std::endl;
+    cv::waitKey();
+
+    return 0;
+}
+----
+
+Para detectar as bolhas que estão na borda, visto que na figura "bolhas.png" todas as bolhas são brancas, basta verificar se quando algumas das coordenadas (x ou y) estiverem na borda, se o pixel vai ser branco
+caso, seja, é aplicado o floodfill na região para pintar toda a bolha encostada na borda de preto e removê-la do processo, como mostra o trecho abaixo:
+[source, cpp]
+----
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            if (image.at<uchar>(i, j) == 255) {
+                if (i == 0 || j == 0 || i == (height - 1) || j == (width - 1)) { // Nas bordas direita e esquerda o height - 1 e widht -1  servem para corrigir o valor correto da imagem
+                    p.x = j;                                                     // já que o programa começa a contagem do 0
+                    p.y = i;
+                    cv::floodFill(image, p, 0);
+                }
+            }
+        }
+    }
+----
+
+Após isso, a variável p que representa um ponto é recolocada na origem para que a figura possa ser pintada com uma cor específica tirando com exceção as bolhas, para facilitar a visualização apenas do usuário que está programando o código
+
+Na próxima etapa, são identificadas as bolhas de uma forma geral, a fim de contabilizar o número total de bolhas da figura, com ou sem buraco, possuindo um ou mais buracos, de acordo com o trecho:
+[source, cpp]
+----
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            if (image.at<uchar>(i, j) == 255) {
+                p.x = j;
+                p.y = i;
+                bubbles++;
+                cv::floodFill(image, p, 30);
+            }
+        }
+    }
+----
+
+Agora, como a figura está com os buracos da figura pintados de preto no tom 0 (zero), o background no tom 200 e as bolhas todas pintadas com o tom 30, para descobrir as que tem buraco basta 
+agora verificar os tons com 0 na figura que identificam os buracos e que não são pintados de 200, somando um contador que diz a quantidade de buracos como mostra o trecho abaixo:
+
+[source, cpp]
+----
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (image.at<uchar>(i, j) == 0) {
+                if (image.at<uchar>(i - 1, j) != 200) {
+                    bburacos++;
+                    p.x = j;
+                    p.y = i;
+                    floodFill(image, p, 200);
+                }
+            }
+        }
+    }
+----
+
+Depois disso basta calcular o complemento das bolhas menos as bolhas com buracos para achar as sem buraco.
+
+==== Resultados
+image::/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex5/bolhas.png[Senoide,256,256,title="Bolhas"]
+image::/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex5/Imagem_bolhas.png[Senoide,256,256,title="Imagem sem bolhas nas bordas"]
+image::/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex5/labeling.png[Senoide,256,256,title="Aplicação do labeling"]
+
+Retornando os seguintes dados:
+->Numero de bolhas com buracos: 7
+->Numero de bolhas sem buracos: 14
+->Numero de bolhas: 21
 
 == 5. Manipulação de histogramas
+O histograma fornece informação a respeito da distribuição dos tons de cores nas imagens de forma que no eixo x fiquem os valores 
+referentes aos tons da imagem, enquanto que no eixo y ficam os valores referentes as frequências de cada cor.
 
+O código abaixo realiza a equalização de histograma que pode acentuar detalhes antes não visíveis devido a distribuição de cores na imagem, assumindo que a imagem de entrada é uma imagem em escala de cinza
+apesar do código poder receber imagens coloridas as convertendo em escala de cinza.
+
+[source, cpp]
+----
+#include <iostream>
+#include <opencv2/opencv.hpp>
+
+using namespace cv;
+using namespace std;
+
+int main(int argc, char** argv) {
+	cv::Mat image, eq_image;
+    cv::Point p;
+
+    image = cv::imread(argv[1],cv::IMREAD_GRAYSCALE);
+    
+    if(!image.data)
+        std::cout << "nao abriu " << argv[1] << std::endl;
+
+    cv::namedWindow("Janela", cv::WINDOW_AUTOSIZE);
+
+    cv::equalizeHist(image, eq_image); //Equaliza o histograma
+
+    cv::imshow("Escala de cinza", image);
+    cv::imwrite("Imagem_esc_cinza.png", image);
+    cv::imshow("Imagem_equalizada", eq_image);
+    cv::imwrite("Imagem_equalizada.png", eq_image);
+    cv::waitKey(0);
+
+    return 0;
+}
+----
+
+Para realizar a equalização foi usada uma função do próprio OpenCV, o que facilitou todo o processo do código, como pode ser visto no trecho abaixo.
+
+[source, cpp]
+----
+ cv::equalizeHist(image, eq_image); //Equaliza o histograma
+----
+
+Nesse contexto, é possível perceber que ao realizar a equalização de histogramas na imagem, os detalhes ficam mais realçados em algumas partes, embora outras ocorra o fenômeno do falso contorno.
+
+==== Resultados
+image::/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex6/paraquedas.png[Paraquedas,630,483,title="Imagem original"]
+image::/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex6/Imagem_esc_cinza.png[Paraqued,630,483,title="Imagem em escala de cinza"]
+image::/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex6/Imagem_equalizada.png[Paraqueda,630,483,title="Imagem equalizada"]
 
 == 6. Filtragem no domínio espacial I
+A filtragem no domínio espacial é um conjunto de técnicas de processamento de imagens que aplica transormações em cada pixel por meio de máscaras aplicadas a pixels adjacentes, de modo 
+que seja possível ter efeito como detector de bordas, suavizados de imagens e até mesmo realçar contrastes.
 
+O código desse exercício faz referência a operação do Laplaciano do Gaussiano, que pode ser entendido como aplicar a transformação Laplaciana em uma transformação
+Gaussiana tendo em vista detectar bordas de forma mais suavizada evitando o efeito de bordas duplas, visto que o Gaussiano dá uma leve borrada na foto suavizando as transições de bordas e o laplaciano detecta bordas.
 
-== 7. Filtragem no domínio espacial II
+[source, cpp]
+----
 
-
-== 8. A Tranformada Discreta de Fourier
+----
