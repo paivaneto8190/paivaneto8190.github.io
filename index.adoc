@@ -117,11 +117,11 @@ Para os resultados, foi inicialmente dado entrada com uma figura denominada "pex
 
 [[fig_pexels, pexels]]
 .pexels
-image::https://github.com/paivaneto8190/paivaneto8190.github.io/blob/main/Ex1/pexels.png[Montanha,600,600,title="Imagem original"]
+image::Ex1/pexels.png[title="Imagem original"]
 
 Abaixo o resultado do código com P1 = (250, 120) e P2 = (520, 520):
 
-image::https://github.com/paivaneto8190/paivaneto8190.github.io/blob/main/Ex1/negativo.png[Montanha,600,600,title="Imagem negativa"]
+image::Ex1/negativo.png[title="Imagem negativa"]
 
 === Exercício 1.2 (Troca de regiões)
 No exercício da troca de regiões, o objetivo é permitir que o usuário entre com uma imagem (preferencialmente quadrada) e divida a imagem em quatro quadrantes trocando-os de forma que o primeiro vire o quarto, o quarto o primeiro, o segundo vire o terceiro e o terceiro vire o segundo, 
