@@ -115,11 +115,11 @@ Caso as coordenadas sejam inválidas é exibida a mensagem acima e logo após o 
 ==== Resultados
 Para os resultados, foi inicialmente dado entrada com uma figura denominada "pexels.png" de tamanho 600 x 600 px colorida que foi aberta em escala de cinza usando o comando [source, cpp] ----image= cv::imread(argv[1],cv::IMREAD_GRAYSCALE);----.
 
-image::/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex1/pexels.png[Montanha,600,600,title="Imagem original"]
+image::https://github.com/paivaneto8190/paivaneto8190.github.io/blob/main/Ex1/pexels.png[Montanha,600,600,title="Imagem original"]
 
 Abaixo o resultado do código com P1 = (250, 120) e P2 = (520, 520):
 
-image::/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex1/negativo.png[Montanha,600,600,title="Imagem negativa"]
+image::https://github.com/paivaneto8190/paivaneto8190.github.io/blob/main/Ex1/negativo.png[Montanha,600,600,title="Imagem negativa"]
 
 === Exercício 1.2 (Troca de regiões)
 No exercício da troca de regiões, o objetivo é permitir que o usuário entre com uma imagem (preferencialmente quadrada) e divida a imagem em quatro quadrantes trocando-os de forma que o primeiro vire o quarto, o quarto o primeiro, o segundo vire o terceiro e o terceiro vire o segundo, 
@@ -193,9 +193,9 @@ e logo após são feitas as concatenações dos quadrantes inferiores de forma q
 Após isso, as duas submatrizes denominadas sup_img e inf_img são concatenadas verticalmente na respectiva ordem citada formando a imagem final com tamanho original da imagem de entrada de 600 x 600 px.
 
 ==== Resultados
-image::/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex1/pexels.png[Montanha,600,600,title="Imagem original"]
+image::https://github.com/paivaneto8190/paivaneto8190.github.io/blob/main/Ex1/pexels.png[Montanha,600,600,title="Imagem original"]
 
-image::/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex2/translated_image.png[Montanha transladada,600,600,title="Imagem transladada"]
+image::https://github.com/paivaneto8190/paivaneto8190.github.io/blob/main/Ex2/translated_image.png[Montanha transladada,600,600,title="Imagem transladada"]
 
 
 
@@ -283,7 +283,7 @@ Da mesma forma, após salvar a imagem em formato de ponto flutuante, o arquivo �
 
 Por fim, apenas pegamos o arquivo em yml e convertermos para uma faixa possível de se enxergar, chegando na imagem abaixo referente a senoide em png:
 
-image::/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex3/senoide-256.png[Senoide,256,256,title="Senoide em PNG"]
+image::https://github.com/paivaneto8190/paivaneto8190.github.io/blob/main/Ex3/senoide-256.png[Senoide,256,256,title="Senoide em PNG"]
 
 
 == 3. Decomposição de imagens em planos de bits
@@ -296,7 +296,7 @@ os bits mais significativos (MSB) tem mais influência nos detalhes da imagem, v
 
 O código abaixo já mostra o processo de decodificação do processo realizado na imagem disponibilizada pelo professor para o exercício referido, com o intuito de descobrir o conteúdo dentro da imagem abaixo:
 
-image::/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex4/painting.png[Pintura, 300, 400, tilte="Imagem original"]
+image::https://github.com/paivaneto8190/paivaneto8190.github.io/blob/main/Ex4/painting.png[Pintura, 300, 400, tilte="Imagem original"]
 
 Passando para o código, temos o seguinte script:
 [source, cpp]
@@ -350,7 +350,7 @@ No trecho acima, a variável valDecode é do tipo Vec3b, que usa uma sobrecarga 
 esquerda de 5 bits, para colocar os 3 bits menos significativos da portadora como os mais significativos, visto que é a parte que foi codificada enquanto o restante dos bits é preenchido com zero para 
 não alterar mais informações, varrendo toda a dimensão da imagem nos três canais de cor sendo mostrada no final o resultada na imagem abaixo:
 
-image::/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex4/estegDecoded.png[Pintura, 300, 400, tilte="Imagem decodificada"]
+image::https://github.com/paivaneto8190/paivaneto8190.github.io/blob/main/Ex4/estegDecoded.png[Pintura, 300, 400, tilte="Imagem decodificada"]
 
 == 4. Preenchendo regiões
 
@@ -503,9 +503,9 @@ agora verificar os tons com 0 na figura que identificam os buracos e que não s�
 Depois disso basta calcular o complemento das bolhas menos as bolhas com buracos para achar as sem buraco.
 
 ==== Resultados
-image::/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex5/bolhas.png[Senoide,256,256,title="Bolhas"]
-image::/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex5/Imagem_bolhas.png[Senoide,256,256,title="Imagem sem bolhas nas bordas"]
-image::/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex5/labeling.png[Senoide,256,256,title="Aplicação do labeling"]
+image::https://github.com/paivaneto8190/paivaneto8190.github.io/blob/main/Ex5/bolhas.png[Senoide,256,256,title="Bolhas"]
+image::https://github.com/paivaneto8190/paivaneto8190.github.io/blob/main/Ex5/Imagem_bolhas.png[Senoide,256,256,title="Imagem sem bolhas nas bordas"]
+image::https://github.com/paivaneto8190/paivaneto8190.github.io/blob/main/Ex5/labeling.png[Senoide,256,256,title="Aplicação do labeling"]
 
 Retornando os seguintes dados:
 ->Numero de bolhas com buracos: 7
@@ -560,9 +560,9 @@ Para realizar a equalização foi usada uma função do próprio OpenCV, o que f
 Nesse contexto, é possível perceber que ao realizar a equalização de histogramas na imagem, os detalhes ficam mais realçados em algumas partes, embora outras ocorra o fenômeno do falso contorno.
 
 ==== Resultados
-image::/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex6/paraquedas.png[Paraquedas,630,483,title="Imagem original"]
-image::/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex6/Imagem_esc_cinza.png[Paraqued,630,483,title="Imagem em escala de cinza"]
-image::/home/paiva/Desktop/PDI/paivaneto8190.github.io/Ex6/Imagem_equalizada.png[Paraqueda,630,483,title="Imagem equalizada"]
+image::https://github.com/paivaneto8190/paivaneto8190.github.io/blob/main/Ex6/paraquedas.png[Paraquedas,630,483,title="Imagem original"]
+image::https://github.com/paivaneto8190/paivaneto8190.github.io/blob/main/Ex6/Imagem_esc_cinza.png[Paraqued,630,483,title="Imagem em escala de cinza"]
+image::https://github.com/paivaneto8190/paivaneto8190.github.io/blob/main/Ex6/Imagem_equalizada.png[Paraqueda,630,483,title="Imagem equalizada"]
 
 == 6. Filtragem no domínio espacial I
 A filtragem no domínio espacial é um conjunto de técnicas de processamento de imagens que aplica transormações em cada pixel por meio de máscaras aplicadas a pixels adjacentes, de modo 
