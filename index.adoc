@@ -4,6 +4,8 @@ Francisco Paiva da Silva Neto - paiva.neto.067@ufrn.edu.br
 :allow-uri-read:
 :imagesdir: ./imagem
 
+== obs: As figuras não aparecem no site, embora aparecem no arquivo index.adoc na pasta do repositório, visto que mesmo tentando comandos diferentes as imagens continuam não aparecendo no site.
+
 == 1. Manipulando pixels em uma imagem
 
 === Exercício 1.1 (Negativo da imagem)
