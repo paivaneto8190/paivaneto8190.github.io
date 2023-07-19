@@ -115,7 +115,7 @@ Caso as coordenadas sejam inválidas é exibida a mensagem acima e logo após o 
 ==== Resultados
 Para os resultados, foi inicialmente dado entrada com uma figura denominada "pexels.png" de tamanho 600 x 600 px colorida que foi aberta em escala de cinza usando o comando [source, cpp] ----image= cv::imread(argv[1],cv::IMREAD_GRAYSCALE);----.
 
-image::https://github.com/paivaneto8190/paivaneto8190.github.io/blob/main/Ex1/pexels.png[Montanha,600,600,title="Imagem original"]
+image::hpexels.png[Montanha,600,600,title="Imagem original"]
 
 Abaixo o resultado do código com P1 = (250, 120) e P2 = (520, 520):
 
